@@ -8,6 +8,7 @@ Travaux pratiques AWS realises en Terraform.
 |---|---|
 | tp5/ | ALB + ASG multi-AZ haute disponibilite |
 | tp6/ | S3 securite - versioning, TLS, chiffrement, lifecycle |
+| tp7/ | RDS prive - SG restrictif, chiffrement, snapshot et restauration |
 
 ## Prerequis
 
@@ -16,8 +17,10 @@ Travaux pratiques AWS realises en Terraform.
 
 ## Utilisation
 
-    cd tp5/   # ou tp6/
-    cp terraform.tfvars.example terraform.tfvars
-    terraform init
-    terraform plan
-    terraform apply
+```bash
+cd tp5/   # ou tp6/ ou tp7/
+cp terraform.tfvars.example terraform.tfvars
+terraform init
+terraform plan
+terraform apply
+```
