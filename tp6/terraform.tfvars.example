@@ -1,0 +1,4 @@
+profile     = "training"
+region      = "eu-west-3"
+account_id  = "xxxxxxxxxxxx"
+bucket_name = "tp6-ops-student-xxxxxxxxxxxx"
