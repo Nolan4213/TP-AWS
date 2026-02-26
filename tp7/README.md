@@ -4,6 +4,8 @@
 > applicatif via un Security Group restrictif, mettre en œuvre les sauvegardes
 > et documenter une restauration complète.
 
+> 📁 Les captures d'écran de toutes les preuves de validation sont disponibles dans le dossier [`docs/`](docs/).
+
 ---
 
 ## Architecture
@@ -134,8 +136,6 @@ SSL connection (protocol: TLSv1.3, cipher: TLS_AES_256_GCM_SHA384, compression: 
 tp7db=>
 ```
 
-![Connexion RDS](docs/Connexion_BDD.png)
-
 ---
 
 ### 2. Requêtes SQL de preuve
@@ -164,8 +164,6 @@ SELECT version();
 SHOW ssl;
 ```
 
-![Requêtes SQL](docs/Requêtes_BDD.png)
-
 ---
 
 ### 3. Connexion depuis réseau non autorisé = impossible
@@ -188,8 +186,6 @@ aws rds create-db-snapshot `
 - **Type** : manual
 - **Chiffré** : true (même clé KMS que l'instance source)
 - **Status** : available
-
-![Snapshot](docs/Snapshot_BDD.png)
 
 ---
 
@@ -231,9 +227,5 @@ psql -h tp7-postgres-restored.cpai0qcwim1j.eu-west-3.rds.amazonaws.com \
 SELECT * FROM tp7_proof;
 ```
 
-![Preuve restauration](docs/Preuve_données_restauré.png)
-
 > ✅ Les 3 lignes de `tp7_proof` sont présentes dans l'instance restaurée —
 > la restauration est validée.
-
-![Connexion instance restaurée](docs/Connexion_BDD_Restore.png)
