@@ -1,7 +1,7 @@
 # TP AWS - Infrastructure as Code
 
-Travaux pratiques AWS realises en Terraform.
-
+Travaux pratiques AWS realisés en Terraform.
+Vous trouverez les document nécessaires fichier .tf, captures d'écran...
 ## Structure
 
 | Dossier | Description |
