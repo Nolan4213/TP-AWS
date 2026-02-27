@@ -1,0 +1,4 @@
+aws_region  = "eu-west-3"
+profile     = "training"
+bucket_name = "votre-bucket-s3"
+account_id  = "votre-account-id"
