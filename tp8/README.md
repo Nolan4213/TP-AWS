@@ -3,7 +3,7 @@
 > Objectif : Concevoir une table DynamoDB orientée requêtes, éviter le Scan,
 > mettre en place un GSI, une politique TTL et activer les Streams.
 
-> 📁 Les captures d'écran de toutes les preuves de validation sont disponibles
+> 📁 Les captures d'écran des preuves de déploiement sont disponibles
 > dans le dossier [docs/](docs/).
 
 ---
@@ -85,7 +85,25 @@ Les 10 items couvrent 5 utilisateurs (USER#1 à USER#5),
       --expression-attribute-values '{":pk":{"S":"USER#1"}}' \
       --profile training
 
-> ✅ Résultat : 3 items (Laptop, Mouse, Keyboard) — Count: 3, ScannedCount: 3
+Résultat :
+
+    {
+      "Items": [
+        { "PK": {"S": "USER#1"}, "SK": {"S": "ORDER#2026-02-01#001"},
+          "product": {"S": "Laptop"}, "status": {"S": "PENDING"},
+          "created_at": {"S": "2026-02-01"}, "amount": {"N": "1200"} },
+        { "PK": {"S": "USER#1"}, "SK": {"S": "ORDER#2026-02-10#002"},
+          "product": {"S": "Mouse"}, "status": {"S": "SHIPPED"},
+          "created_at": {"S": "2026-02-10"}, "amount": {"N": "30"} },
+        { "PK": {"S": "USER#1"}, "SK": {"S": "ORDER#2026-02-20#003"},
+          "product": {"S": "Keyboard"}, "status": {"S": "DONE"},
+          "created_at": {"S": "2026-02-20"}, "amount": {"N": "80"} }
+      ],
+      "Count": 3,
+      "ScannedCount": 3
+    }
+
+> ✅ 3 commandes retournées pour USER#1 — aucun Scan
 
 ### Query 2 — Commandes par statut via GSI
 
@@ -97,7 +115,29 @@ Les 10 items couvrent 5 utilisateurs (USER#1 à USER#5),
       --expression-attribute-values '{":status":{"S":"PENDING"}}' \
       --profile training
 
-> ✅ Résultat : 4 items PENDING (dont l'item éphémère TTL USER#5) — Count: 4
+Résultat :
+
+    {
+      "Items": [
+        { "PK": {"S": "USER#1"}, "SK": {"S": "ORDER#2026-02-01#001"},
+          "product": {"S": "Laptop"}, "status": {"S": "PENDING"},
+          "created_at": {"S": "2026-02-01"}, "amount": {"N": "1200"} },
+        { "PK": {"S": "USER#2"}, "SK": {"S": "ORDER#2026-02-05#004"},
+          "product": {"S": "Monitor"}, "status": {"S": "PENDING"},
+          "created_at": {"S": "2026-02-05"}, "amount": {"N": "350"} },
+        { "PK": {"S": "USER#3"}, "SK": {"S": "ORDER#2026-02-18#007"},
+          "product": {"S": "Desk"}, "status": {"S": "PENDING"},
+          "created_at": {"S": "2026-02-18"}, "amount": {"N": "400"} },
+        { "PK": {"S": "USER#5"}, "SK": {"S": "ORDER#2026-02-27#010"},
+          "product": {"S": "Temporary Item"}, "status": {"S": "PENDING"},
+          "created_at": {"S": "2026-02-27"}, "expires_at": {"N": "1740700800"},
+          "amount": {"N": "10"} }
+      ],
+      "Count": 4,
+      "ScannedCount": 4
+    }
+
+> ✅ 4 commandes PENDING via GSI status-index — dont l'item éphémère USER#5
 
 ### Query 3 — Commandes par date (SK range)
 
@@ -107,7 +147,22 @@ Les 10 items couvrent 5 utilisateurs (USER#1 à USER#5),
       --expression-attribute-values '{":pk":{"S":"USER#1"},":date":{"S":"ORDER#2026-02-10"}}' \
       --profile training
 
-> ✅ Résultat : 2 items à partir du 10 février (Mouse, Keyboard) — Count: 2
+Résultat :
+
+    {
+      "Items": [
+        { "PK": {"S": "USER#1"}, "SK": {"S": "ORDER#2026-02-10#002"},
+          "product": {"S": "Mouse"}, "status": {"S": "SHIPPED"},
+          "created_at": {"S": "2026-02-10"}, "amount": {"N": "30"} },
+        { "PK": {"S": "USER#1"}, "SK": {"S": "ORDER#2026-02-20#003"},
+          "product": {"S": "Keyboard"}, "status": {"S": "DONE"},
+          "created_at": {"S": "2026-02-20"}, "amount": {"N": "80"} }
+      ],
+      "Count": 2,
+      "ScannedCount": 2
+    }
+
+> ✅ 2 commandes de USER#1 à partir du 10 février — tri par SK garanti
 
 ---
 
@@ -167,8 +222,5 @@ Résultat :
     │   └── item10.json
     └── docs/
         ├── Terraform_Apply.png
-        ├── Query_User.png
-        ├── Query_GSI_Status.png
-        ├── Query_Date.png
         ├── TTL_Config.png
         └── Stream_Config.png
