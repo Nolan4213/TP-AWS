@@ -35,6 +35,18 @@ possède un statut et une date de création.
 > Aucun `Scan` utilisé — 100% Query sur clés dimensionnées selon les patterns
 > d'accès, pas selon un modèle relationnel.
 
+### Pourquoi pas de Scan ?
+
+Un `Scan` lit **toute la table** et consomme des unités de capacité
+proportionnellement à sa taille — coûteux et non scalable.
+
+Toutes les requêtes de ce TP sont couvertes par des `Query` ciblées :
+- Lecture par utilisateur → `Query` sur `PK` (table principale)
+- Lecture par statut → `Query` sur GSI `status-index`
+- Lecture par date → `Query` sur `SK` avec condition `>=`
+
+> ⛔ Aucun `Scan` n'est utilisé dans ce TP. Le design des clés et du GSI
+> a été pensé en amont pour couvrir tous les patterns d'accès sans Scan.
 ---
 
 ## Infrastructure Terraform
