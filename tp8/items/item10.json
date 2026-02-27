@@ -1,0 +1,9 @@
+{
+  "PK": {"S": "USER#5"},
+  "SK": {"S": "ORDER#2026-02-27#010"},
+  "status": {"S": "PENDING"},
+  "created_at": {"S": "2026-02-27"},
+  "product": {"S": "Temporary Item"},
+  "amount": {"N": "10"},
+  "expires_at": {"N": "1740700800"}
+}

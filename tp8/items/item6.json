@@ -1,0 +1,8 @@
+{
+  "PK": {"S": "USER#3"},
+  "SK": {"S": "ORDER#2026-02-08#006"},
+  "status": {"S": "SHIPPED"},
+  "created_at": {"S": "2026-02-08"},
+  "product": {"S": "Headset"},
+  "amount": {"N": "150"}
+}

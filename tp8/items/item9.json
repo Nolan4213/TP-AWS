@@ -1,0 +1,8 @@
+{
+  "PK": {"S": "USER#4"},
+  "SK": {"S": "ORDER#2026-02-22#009"},
+  "status": {"S": "SHIPPED"},
+  "created_at": {"S": "2026-02-22"},
+  "product": {"S": "USB Hub"},
+  "amount": {"N": "45"}
+}

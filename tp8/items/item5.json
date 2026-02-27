@@ -1,0 +1,8 @@
+{
+  "PK": {"S": "USER#2"},
+  "SK": {"S": "ORDER#2026-02-15#005"},
+  "status": {"S": "DONE"},
+  "created_at": {"S": "2026-02-15"},
+  "product": {"S": "Webcam"},
+  "amount": {"N": "90"}
+}
