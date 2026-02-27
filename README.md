@@ -1,26 +1,25 @@
 # TP AWS - Infrastructure as Code
 
-Travaux pratiques AWS realisés en Terraform.
-Vous trouverez les document nécessaires fichier .tf, captures d'écran...
+Travaux pratiques AWS réalisés en Terraform.
+
 ## Structure
 
 | Dossier | Description |
-|---|---|
-| tp5/ | ALB + ASG multi-AZ haute disponibilite |
-| tp6/ | S3 securite - versioning, TLS, chiffrement, lifecycle |
-| tp7/ | RDS prive - SG restrictif, chiffrement, snapshot et restauration |
+|---------|-------------|
+| `tp5/`  | ALB + ASG multi-AZ haute disponibilité |
+| `tp6/`  | S3 sécurité - versioning, TLS, chiffrement, lifecycle |
+| `tp7/`  | RDS privée - SG restrictif, chiffrement, snapshot et restauration |
+| `tp8/`  | DynamoDB - modélisation par requêtes, GSI, TTL, Streams |
 
-## Prerequis
+## Pré-requis
 
-- AWS CLI configure avec profil training
+- AWS CLI configuré avec profil `training`
 - Terraform >= 1.0
 
 ## Utilisation
 
-```bash
-cd tp5/   # ou tp6/ ou tp7/
-cp terraform.tfvars.example terraform.tfvars
-terraform init
-terraform plan
-terraform apply
-```
+    cd tp5/   # ou tp6/ ou tp7/ ou tp8/
+    cp terraform.tfvars.example terraform.tfvars
+    terraform init
+    terraform plan
+    terraform apply
