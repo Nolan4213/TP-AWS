@@ -1,0 +1,6 @@
+aws_region         = "eu-west-3"
+account_id         = "792390865255"
+consumer_role_name = "tp10-consumer-role"
+s3_bucket_name     = "tp6-training-792390865255"
+secret_username    = "admin"
+secret_password    = "Sup3rS3cr3t!"
