@@ -1,0 +1,296 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: "TP13 - Socle VPC reproductible multi-AZ avec subnets publics et prives"
+
+# ─── Paramètres ─────────────────────────────────────────────────
+Parameters:
+  ProjectName:
+    Type: String
+    Default: TP13
+    Description: Nom du projet pour les tags
+
+  Owner:
+    Type: String
+    Default: tp-session
+    Description: Proprietaire des ressources
+
+  Env:
+    Type: String
+    Default: training
+    AllowedValues: [training, staging, prod]
+    Description: Environnement de deploiement
+
+  CostCenter:
+    Type: String
+    Default: formation-aws
+    Description: Centre de cout pour la facturation
+
+  VpcCidr:
+    Type: String
+    Default: "10.13.0.0/16"
+    Description: CIDR block du VPC
+
+  PublicSubnet1Cidr:
+    Type: String
+    Default: "10.13.1.0/24"
+    Description: CIDR subnet public AZ-a
+
+  PublicSubnet2Cidr:
+    Type: String
+    Default: "10.13.2.0/24"
+    Description: CIDR subnet public AZ-b
+
+  PrivateSubnet1Cidr:
+    Type: String
+    Default: "10.13.3.0/24"
+    Description: CIDR subnet prive AZ-a
+
+  PrivateSubnet2Cidr:
+    Type: String
+    Default: "10.13.4.0/24"
+    Description: CIDR subnet prive AZ-b
+
+# ─── Ressources ─────────────────────────────────────────────────
+Resources:
+
+  # VPC
+  VPC:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: !Ref VpcCidr
+      EnableDnsSupport: true
+      EnableDnsHostnames: true
+      Tags:
+        - Key: Name
+          Value: !Sub "${ProjectName}-vpc"
+        - Key: Project
+          Value: !Ref ProjectName
+        - Key: Owner
+          Value: !Ref Owner
+        - Key: Env
+          Value: !Ref Env
+        - Key: CostCenter
+          Value: !Ref CostCenter
+
+  # Internet Gateway
+  InternetGateway:
+    Type: AWS::EC2::InternetGateway
+    Properties:
+      Tags:
+        - Key: Name
+          Value: !Sub "${ProjectName}-igw"
+        - Key: Project
+          Value: !Ref ProjectName
+        - Key: Owner
+          Value: !Ref Owner
+        - Key: Env
+          Value: !Ref Env
+        - Key: CostCenter
+          Value: !Ref CostCenter
+
+  IGWAttachment:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      VpcId: !Ref VPC
+      InternetGatewayId: !Ref InternetGateway
+
+  # Subnets publics
+  PublicSubnet1:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref VPC
+      CidrBlock: !Ref PublicSubnet1Cidr
+      AvailabilityZone: !Select [0, !GetAZs ""]
+      MapPublicIpOnLaunch: false
+      Tags:
+        - Key: Name
+          Value: !Sub "${ProjectName}-public-subnet-1"
+        - Key: Project
+          Value: !Ref ProjectName
+        - Key: Owner
+          Value: !Ref Owner
+        - Key: Env
+          Value: !Ref Env
+        - Key: CostCenter
+          Value: !Ref CostCenter
+        - Key: Tier
+          Value: public
+
+  PublicSubnet2:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref VPC
+      CidrBlock: !Ref PublicSubnet2Cidr
+      AvailabilityZone: !Select [1, !GetAZs ""]
+      MapPublicIpOnLaunch: false
+      Tags:
+        - Key: Name
+          Value: !Sub "${ProjectName}-public-subnet-2"
+        - Key: Project
+          Value: !Ref ProjectName
+        - Key: Owner
+          Value: !Ref Owner
+        - Key: Env
+          Value: !Ref Env
+        - Key: CostCenter
+          Value: !Ref CostCenter
+        - Key: Tier
+          Value: public
+
+  # Subnets privés
+  PrivateSubnet1:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref VPC
+      CidrBlock: !Ref PrivateSubnet1Cidr
+      AvailabilityZone: !Select [0, !GetAZs ""]
+      MapPublicIpOnLaunch: false
+      Tags:
+        - Key: Name
+          Value: !Sub "${ProjectName}-private-subnet-1"
+        - Key: Project
+          Value: !Ref ProjectName
+        - Key: Owner
+          Value: !Ref Owner
+        - Key: Env
+          Value: !Ref Env
+        - Key: CostCenter
+          Value: !Ref CostCenter
+        - Key: Tier
+          Value: private
+
+  PrivateSubnet2:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref VPC
+      CidrBlock: !Ref PrivateSubnet2Cidr
+      AvailabilityZone: !Select [1, !GetAZs ""]
+      MapPublicIpOnLaunch: false
+      Tags:
+        - Key: Name
+          Value: !Sub "${ProjectName}-private-subnet-2"
+        - Key: Project
+          Value: !Ref ProjectName
+        - Key: Owner
+          Value: !Ref Owner
+        - Key: Env
+          Value: !Ref Env
+        - Key: CostCenter
+          Value: !Ref CostCenter
+        - Key: Tier
+          Value: private
+
+  # Route table publique
+  PublicRouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref VPC
+      Tags:
+        - Key: Name
+          Value: !Sub "${ProjectName}-public-rt"
+        - Key: Project
+          Value: !Ref ProjectName
+        - Key: Owner
+          Value: !Ref Owner
+        - Key: Env
+          Value: !Ref Env
+        - Key: CostCenter
+          Value: !Ref CostCenter
+
+  PublicRoute:
+    Type: AWS::EC2::Route
+    DependsOn: IGWAttachment
+    Properties:
+      RouteTableId: !Ref PublicRouteTable
+      DestinationCidrBlock: "0.0.0.0/0"
+      GatewayId: !Ref InternetGateway
+
+  PublicSubnet1RTAssoc:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref PublicSubnet1
+      RouteTableId: !Ref PublicRouteTable
+
+  PublicSubnet2RTAssoc:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref PublicSubnet2
+      RouteTableId: !Ref PublicRouteTable
+
+  # Route table privée
+  PrivateRouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref VPC
+      Tags:
+        - Key: Name
+          Value: !Sub "${ProjectName}-private-rt"
+        - Key: Project
+          Value: !Ref ProjectName
+        - Key: Owner
+          Value: !Ref Owner
+        - Key: Env
+          Value: !Ref Env
+        - Key: CostCenter
+          Value: !Ref CostCenter
+
+  PrivateSubnet1RTAssoc:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref PrivateSubnet1
+      RouteTableId: !Ref PrivateRouteTable
+
+  PrivateSubnet2RTAssoc:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref PrivateSubnet2
+      RouteTableId: !Ref PrivateRouteTable
+
+# ─── Outputs ────────────────────────────────────────────────────
+Outputs:
+  VpcId:
+    Description: ID du VPC deploye
+    Value: !Ref VPC
+    Export:
+      Name: !Sub "${ProjectName}-VpcId"
+
+  PublicSubnet1Id:
+    Description: ID subnet public AZ-a
+    Value: !Ref PublicSubnet1
+    Export:
+      Name: !Sub "${ProjectName}-PublicSubnet1Id"
+
+  PublicSubnet2Id:
+    Description: ID subnet public AZ-b
+    Value: !Ref PublicSubnet2
+    Export:
+      Name: !Sub "${ProjectName}-PublicSubnet2Id"
+
+  PrivateSubnet1Id:
+    Description: ID subnet prive AZ-a
+    Value: !Ref PrivateSubnet1
+    Export:
+      Name: !Sub "${ProjectName}-PrivateSubnet1Id"
+
+  PrivateSubnet2Id:
+    Description: ID subnet prive AZ-b
+    Value: !Ref PrivateSubnet2
+    Export:
+      Name: !Sub "${ProjectName}-PrivateSubnet2Id"
+
+  PublicRouteTableId:
+    Description: ID route table publique
+    Value: !Ref PublicRouteTable
+    Export:
+      Name: !Sub "${ProjectName}-PublicRTId"
+
+  PrivateRouteTableId:
+    Description: ID route table privee
+    Value: !Ref PrivateRouteTable
+    Export:
+      Name: !Sub "${ProjectName}-PrivateRTId"
+
+  InternetGatewayId:
+    Description: ID Internet Gateway
+    Value: !Ref InternetGateway
+    Export:
+      Name: !Sub "${ProjectName}-IGWId"
