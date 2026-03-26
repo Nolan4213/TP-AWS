@@ -1,0 +1,4 @@
+aws_region     = "eu-west-3"
+profile        = "training"
+account_id     = "votre-account-id"
+dynamodb_table = "tp8-orders"
