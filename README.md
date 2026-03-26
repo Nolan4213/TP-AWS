@@ -16,6 +16,8 @@ Travaux pratiques AWS réalisés en Terraform.
 | `tp12/` | KMS + Secrets Manager + GuardDuty - chiffrement et secrets au runtime |
 | `tp13/` | CloudFormation - socle réseau VPC reproductible |`
 | `tp14/` | ECS Fargate + ECR + ALB - service conteneurisé avec logs CloudWatch |
+| `tp15/` | Budgets, tags FinOps, continuité de service et runbook PRA |
+
 
 ## Pré-requis
 
