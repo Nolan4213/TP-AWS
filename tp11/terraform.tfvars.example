@@ -1,0 +1,7 @@
+aws_region             = "eu-west-3"
+consumer_function_name = "tp10-consumer"
+validator_function_name = "tp10-validator"
+sqs_queue_name         = "tp10-queue"
+dlq_name               = "tp10-dlq"
+api_id                 = "mlt152umse"
+alarm_sns_arn          = ""
