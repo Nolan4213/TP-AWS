@@ -14,6 +14,8 @@ Travaux pratiques AWS réalisés en Terraform.
 | `tp10/` | API Gateway + SQS + DLQ + Lambda - pipeline asynchrone robuste |
 | `tp11/` | Observabilité CloudWatch, CloudTrail, Flow Logs, alarmes et runbook |
 | `tp12/` | KMS + Secrets Manager + GuardDuty - chiffrement et secrets au runtime |
+| `tp13/` | CloudFormation - socle réseau VPC reproductible |`
+
 
 ## Pré-requis
 
