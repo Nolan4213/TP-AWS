@@ -3,8 +3,7 @@
 > Objectif : Mettre en place une supervision minimale exploitable et une
 > traçabilité des actions sur le pipeline asynchrone TP10.
 
-> 📁 Les captures d'écran des preuves de déploiement sont disponibles
-> dans le dossier [docs/](docs/).
+
 
 ---
 
