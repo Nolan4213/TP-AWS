@@ -12,7 +12,7 @@ Travaux pratiques AWS réalisés en Terraform.
 | `tp8/`  | DynamoDB - modélisation par requêtes, GSI, TTL, Streams |
 | `tp9/`  | Lambda + API Gateway - serverless REST API avec DynamoDB |
 | `tp10/` | API Gateway + SQS + DLQ + Lambda - pipeline asynchrone robuste |
-
+| `tp11/` | Observabilité CloudWatch, CloudTrail, Flow Logs, alarmes et runbook |
 ## Pré-requis
 
 - AWS CLI configuré avec profil `training`
