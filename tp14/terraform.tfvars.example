@@ -1,0 +1,9 @@
+aws_region   = "eu-west-3"
+project_name = "tp14"
+owner        = "tp-session"
+env          = "training"
+cost_center  = "formation-aws"
+
+vpc_id          = "vpc-xxxxxxxxxxxxxxxxx"
+public_subnets  = ["subnet-public-a", "subnet-public-b"]
+private_subnets = ["subnet-private-a", "subnet-private-b"]
