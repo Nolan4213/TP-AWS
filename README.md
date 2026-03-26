@@ -13,6 +13,8 @@ Travaux pratiques AWS réalisés en Terraform.
 | `tp9/`  | Lambda + API Gateway - serverless REST API avec DynamoDB |
 | `tp10/` | API Gateway + SQS + DLQ + Lambda - pipeline asynchrone robuste |
 | `tp11/` | Observabilité CloudWatch, CloudTrail, Flow Logs, alarmes et runbook |
+| `tp12/` | KMS + Secrets Manager + GuardDuty - chiffrement et secrets au runtime |
+
 ## Pré-requis
 
 - AWS CLI configuré avec profil `training`
