@@ -4,8 +4,6 @@
 > un secret au runtime via rôle applicatif, et activer la détection
 > de menaces GuardDuty.
 
-> 📁 Les captures d'écran des preuves de déploiement sont disponibles
-> dans le dossier [docs/](docs/).
 
 ---
 
